@@ -1,22 +1,16 @@
-from django.shortcuts import render
-from .forms import ProductForm, IceCreamForm
+from django.shortcuts import render, redirect
+from .forms import ProductFormSet
 
-def create_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'product_created.html')
+def product_view(request):
+    if request.method == "POST":
+        formset = ProductFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            return redirect('success_page') 
     else:
-        form = ProductForm()
-    return render(request, 'create_product.html', {'form': form})
+        formset = ProductFormSet()
 
-def create_ice_cream(request):
-    if request.method == 'POST':
-        form = IceCreamForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'ice_cream_created.html')
-    else:
-        form = IceCreamForm()
-    return render(request, 'create_ice_cream.html', {'form': form})
+    return render(request, 'your_app/product_form.html', {'formset': formset})
+
+def success_page(request):
+    return render(request, 'your_app/success.html')

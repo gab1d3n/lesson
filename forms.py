@@ -1,12 +1,5 @@
 from django import forms
-from .models import Product, IceCream
+from django.forms import modelformset_factory
+from .models import Product
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'price']  
-
-class IceCreamForm(forms.ModelForm):
-    class Meta:
-        model = IceCream
-        fields = ['flavor', 'price', 'is_vegan']
+ProductFormSet = modelformset_factory(Product, fields=['name', 'price', 'quantity'], extra=2)
